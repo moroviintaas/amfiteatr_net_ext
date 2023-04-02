@@ -3,9 +3,9 @@ use std::fmt::Debug;
 use std::io::{Read, Write};
 use std::marker::PhantomData;
 use speedy::{LittleEndian, Readable, Writable};
-use tur::error::CommError;
+use sztorm::error::CommError;
 use thiserror::Error;
-use tur::comm::CommEndpoint;
+use sztorm::CommEndpoint;
 
 //const BRIDGE_COMM_BUFFER_SIZE: usize = 256;
 #[derive(Debug, Copy, Clone, Error)]
