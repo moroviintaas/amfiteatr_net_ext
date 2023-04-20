@@ -6,6 +6,7 @@ use speedy::{LittleEndian, Readable, Writable};
 use sztorm::error::CommError;
 use thiserror::Error;
 use sztorm::CommEndpoint;
+use sztorm::protocol::ProtocolSpecification;
 
 //const BRIDGE_COMM_BUFFER_SIZE: usize = 256;
 #[derive(Debug, Copy, Clone, Error)]
@@ -23,7 +24,7 @@ pub enum TcpCommError{
     #[error("TryRecv Error (disconnected)")]
     TryRecvDisconnectedError,
 }
-
+/*
 impl From<TcpCommError> for CommError{
     fn from(value: TcpCommError) -> Self {
         match value{
@@ -36,7 +37,7 @@ impl From<TcpCommError> for CommError{
         }
     }
 }
-
+*/
 pub struct TcpComm<OT, IT, E: Error, const  SIZE: usize>{
     stream: std::net::TcpStream,
     _ot: PhantomData<OT>,
@@ -118,3 +119,16 @@ E: From<TcpCommError>{
 
 pub type TcpCommK1<OT, IT, E> = TcpComm<OT, IT, E, 1024>;
 pub type TcpComm512<OT, IT, E> = TcpComm<OT, IT, E, 512>;
+
+impl<Spec: ProtocolSpecification> From<TcpCommError> for CommError<Spec>{
+    fn from(value: TcpCommError) -> Self {
+        match value{
+            TcpCommError::SerializeError => CommError::SerializeError,
+            TcpCommError::DeserializeError => CommError::DeserializeError,
+            TcpCommError::SendError => CommError::SendErrorUnspecified,
+            TcpCommError::RecvError => CommError::RecvErrorUnspecified,
+            TcpCommError::TryRecvEmptyError => CommError::TryRecvErrorEmptyUnspecified,
+            TcpCommError::TryRecvDisconnectedError => CommError::TryRecvErrorDisconnectedUnspecified
+        }
+    }
+}
