@@ -118,6 +118,7 @@ E: From<TcpCommError>{
 }
 
 pub type TcpCommK1<OT, IT, E> = TcpComm<OT, IT, E, 1024>;
+pub type TcpCommK2<OT, IT, E> = TcpComm<OT, IT, E, 2048>;
 pub type TcpComm512<OT, IT, E> = TcpComm<OT, IT, E, 512>;
 
 impl<Spec: ProtocolSpecification> From<TcpCommError> for CommError<Spec>{
