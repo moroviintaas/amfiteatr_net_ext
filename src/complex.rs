@@ -44,3 +44,4 @@ E: std::error::Error + From<TcpCommError> + From<RecvError> + From<SendError<OT>
 }
 
 pub type ComplexComm2048<OT, IT, E> = ComplexComm<OT, IT, E, 2048>;
+pub type ComplexComm1024<OT, IT, E> = ComplexComm<OT, IT, E, 1024>;
