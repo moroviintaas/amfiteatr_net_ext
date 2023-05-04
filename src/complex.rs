@@ -1,7 +1,7 @@
 
 
 use speedy::{Writable, Readable, LittleEndian};
-use sztorm::{CommEndpoint, SyncComm, error::CommError};
+use sztorm::{CommEndpoint, SyncComm};
 use std::{fmt::Debug, sync::mpsc::{RecvError, SendError, TryRecvError}};
 
 use crate::tcp::{TcpComm, TcpCommError};
