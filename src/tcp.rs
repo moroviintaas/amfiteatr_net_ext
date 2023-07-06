@@ -6,7 +6,7 @@ use speedy::{LittleEndian, Readable, Writable};
 use sztorm::error::CommError;
 use thiserror::Error;
 use sztorm::CommEndpoint;
-use sztorm::protocol::ProtocolSpecification;
+use sztorm::protocol::DomainParameters;
 
 //const BRIDGE_COMM_BUFFER_SIZE: usize = 256;
 #[derive(Debug, Copy, Clone, Error)]
@@ -121,7 +121,7 @@ pub type TcpCommK1<OT, IT, E> = TcpComm<OT, IT, E, 1024>;
 pub type TcpCommK2<OT, IT, E> = TcpComm<OT, IT, E, 2048>;
 pub type TcpComm512<OT, IT, E> = TcpComm<OT, IT, E, 512>;
 
-impl<Spec: ProtocolSpecification> From<TcpCommError> for CommError<Spec>{
+impl<Spec: DomainParameters> From<TcpCommError> for CommError<Spec>{
     fn from(value: TcpCommError) -> Self {
         match value{
             TcpCommError::SerializeError => CommError::SerializeError,
