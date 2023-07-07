@@ -5,7 +5,7 @@ use std::marker::PhantomData;
 use speedy::{LittleEndian, Readable, Writable};
 use sztorm::error::CommError;
 use thiserror::Error;
-use sztorm::CommEndpoint;
+use sztorm::comm::CommEndpoint;
 use sztorm::protocol::DomainParameters;
 
 //const BRIDGE_COMM_BUFFER_SIZE: usize = 256;
