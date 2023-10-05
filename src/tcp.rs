@@ -6,7 +6,7 @@ use speedy::{LittleEndian, Readable, Writable};
 use sztorm::error::CommError;
 use thiserror::Error;
 use sztorm::comm::CommEndpoint;
-use sztorm::protocol::DomainParameters;
+use sztorm::domain::DomainParameters;
 
 //const BRIDGE_COMM_BUFFER_SIZE: usize = 256;
 #[derive(Debug, Copy, Clone, Error)]
