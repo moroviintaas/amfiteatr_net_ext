@@ -9,16 +9,16 @@ use sztorm::comm::CommEndpoint;
 use sztorm::domain::DomainParameters;
 
 //const BRIDGE_COMM_BUFFER_SIZE: usize = 256;
-#[derive(Debug, Copy, Clone, Error)]
+#[derive(Debug, Clone, Error)]
 pub enum TcpCommError{
-    #[error("Serialize Error")]
-    SerializeError,
-    #[error("Deserialize Error")]
-    DeserializeError,
-    #[error("Send Error")]
-    SendError,
-    #[error("Recv Error")]
-    RecvError,
+    #[error("Serialize Error, text: {0}")]
+    SerializeError(String),
+    #[error("Deserialize Error, text: {0}")]
+    DeserializeError(String),
+    #[error("Send Error, text: {0}")]
+    SendError(String),
+    #[error("Recv Error, text: {0}")]
+    RecvError(String),
     #[error("TryRecv Error (empty)")]
     TryRecvEmptyError,
     #[error("TryRecv Error (disconnected)")]
@@ -65,12 +65,17 @@ E: From<TcpCommError>{
     fn send(&mut self, message: OT) -> Result<(), E> {
 
         let mut buffer = [0u8; SIZE];
+        message.write_to_buffer(&mut buffer)
+            .map_err(|e| TcpCommError::SerializeError(format!("{e:}")).into())?;
+        /*
         if message.write_to_buffer(&mut buffer).is_err(){
             return Err(TcpCommError::SerializeError.into())
         }
+
+         */
         match self.stream.write_all(&buffer){
             Ok(_) => Ok(()),
-            Err(_) => Err(TcpCommError::SendError.into()),
+            Err(e) => Err(TcpCommError::SendError(format!("{e:}")).into()),
         }
     }
     fn receive_blocking(&mut self) -> Result<IT, E> {
@@ -83,12 +88,12 @@ E: From<TcpCommError>{
                 Ok(_) => {
                     received = true;
                 },
-                Err(_e) => {return Err(TcpCommError::RecvError.into())}
+                Err(e) => {return Err(TcpCommError::RecvError(format!("{e:}")).into())}
             }
         }
         match IT::read_from_buffer_copying_data(&buffer){
             Ok(m) => Ok(m),
-            Err(_) => Err(TcpCommError::DeserializeError.into())
+            Err(e) => Err(TcpCommError::DeserializeError(format!("{e:}")).into())
         }
     }
     fn receive_non_blocking(&mut self) -> Result<Option<IT>, E> {
@@ -105,7 +110,7 @@ E: From<TcpCommError>{
                 //debug!("Tcp TryRecv with {} bytes", n);
                 match IT::read_from_buffer_copying_data(&buffer){
                     Ok(m) => Ok(Some(m)),
-                    Err(_) => Err(TcpCommError::DeserializeError.into())
+                    Err(e) => Err(TcpCommError::DeserializeError(format!("{e:}")).into())
                 }
             },
             Err(_e) => {
@@ -125,12 +130,12 @@ pub type TcpComm512<OT, IT, E> = TcpComm<OT, IT, E, 512>;
 impl<Spec: DomainParameters> From<TcpCommError> for CommError<Spec>{
     fn from(value: TcpCommError) -> Self {
         match value{
-            TcpCommError::SerializeError => CommError::SerializeError,
-            TcpCommError::DeserializeError => CommError::DeserializeError,
-            TcpCommError::SendError => CommError::SendErrorUnspecified,
-            TcpCommError::RecvError => CommError::RecvErrorUnspecified,
-            TcpCommError::TryRecvEmptyError => CommError::TryRecvErrorEmptyUnspecified,
-            TcpCommError::TryRecvDisconnectedError => CommError::TryRecvErrorDisconnectedUnspecified
+            TcpCommError::SerializeError(s) => CommError::SerializeError(s),
+            TcpCommError::DeserializeError(s) => CommError::DeserializeError(s),
+            TcpCommError::SendError(s) => CommError::SendErrorUnspecified(s),
+            TcpCommError::RecvError(s) => CommError::RecvErrorUnspecified(s),
+            TcpCommError::TryRecvEmptyError => CommError::RecvEmptyBufferErrorUnspecified,
+            TcpCommError::TryRecvDisconnectedError => CommError::RecvPeerDisconnectedErrorUnspecified
         }
     }
 }
