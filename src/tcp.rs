@@ -73,7 +73,7 @@ E: From<TcpCommError>{
             Err(_) => Err(TcpCommError::SendError.into()),
         }
     }
-    fn recv(&mut self) -> Result<IT, E> {
+    fn receive_blocking(&mut self) -> Result<IT, E> {
         self.stream.set_nonblocking(false).unwrap();
         let mut buffer = [0u8; SIZE];
         let mut received = false;
@@ -91,7 +91,7 @@ E: From<TcpCommError>{
             Err(_) => Err(TcpCommError::DeserializeError.into())
         }
     }
-    fn try_recv(&mut self) -> Result<IT, E> {
+    fn receive_non_blocking(&mut self) -> Result<IT, E> {
         let mut buffer = [0u8; SIZE];
         self.stream.set_nonblocking(true).unwrap();
 

@@ -28,17 +28,17 @@ E: std::error::Error + From<TcpCommError> + From<RecvError> + From<SendError<OT>
         }
     }
 
-    fn recv(&mut self) -> Result<Self::InwardType, Self::Error> {
+    fn receive_blocking(&mut self) -> Result<Self::InwardType, Self::Error> {
         match self{
-            ComplexComm::StdSync(comm) => comm.recv(),
-            ComplexComm::Tcp(comm) => comm.recv(),
+            ComplexComm::StdSync(comm) => comm.receive_blocking(),
+            ComplexComm::Tcp(comm) => comm.receive_blocking(),
         }
     }
 
-    fn try_recv(&mut self) -> Result<Self::InwardType, Self::Error> {
+    fn receive_non_blocking(&mut self) -> Result<Self::InwardType, Self::Error> {
         match self{
-            ComplexComm::StdSync(comm) => comm.try_recv(),
-            ComplexComm::Tcp(comm) => comm.try_recv(),
+            ComplexComm::StdSync(comm) => comm.receive_non_blocking(),
+            ComplexComm::Tcp(comm) => comm.receive_non_blocking(),
         }
     }
 }
