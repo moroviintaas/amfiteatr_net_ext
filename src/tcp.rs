@@ -66,7 +66,7 @@ E: From<TcpCommError>{
 
         let mut buffer = [0u8; SIZE];
         message.write_to_buffer(&mut buffer)
-            .map_err(|e| TcpCommError::SerializeError(format!("{e:}")).into())?;
+            .map_err(|e| TcpCommError::SerializeError(format!("{e:}")))?;
         /*
         if message.write_to_buffer(&mut buffer).is_err(){
             return Err(TcpCommError::SerializeError.into())
