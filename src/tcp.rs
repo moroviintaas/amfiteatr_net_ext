@@ -91,19 +91,20 @@ E: From<TcpCommError>{
             Err(_) => Err(TcpCommError::DeserializeError.into())
         }
     }
-    fn receive_non_blocking(&mut self) -> Result<IT, E> {
+    fn receive_non_blocking(&mut self) -> Result<Option<IT>, E> {
         let mut buffer = [0u8; SIZE];
         self.stream.set_nonblocking(true).unwrap();
 
         match self.stream.read(&mut buffer){
             Ok(0) => {
                 //debug!("TryRecvError");
-                Err(TcpCommError::TryRecvEmptyError.into())
+                //Err(TcpCommError::TryRecvEmptyError.into())
+                Ok(None)
             }
             Ok(_n) => {
                 //debug!("Tcp TryRecv with {} bytes", n);
                 match IT::read_from_buffer_copying_data(&buffer){
-                    Ok(m) => Ok(m),
+                    Ok(m) => Ok(Some(m)),
                     Err(_) => Err(TcpCommError::DeserializeError.into())
                 }
             },

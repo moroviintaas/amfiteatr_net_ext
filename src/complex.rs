@@ -35,7 +35,7 @@ E: std::error::Error + From<TcpCommError> + From<RecvError> + From<SendError<OT>
         }
     }
 
-    fn receive_non_blocking(&mut self) -> Result<Self::InwardType, Self::Error> {
+    fn receive_non_blocking(&mut self) -> Result<Option<Self::InwardType>, Self::Error> {
         match self{
             ComplexComm::StdSync(comm) => comm.receive_non_blocking(),
             ComplexComm::Tcp(comm) => comm.receive_non_blocking(),
