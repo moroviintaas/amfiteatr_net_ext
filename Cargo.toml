@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 log = "0.4.17"
 speedy = "0.8.5"
-amfi = {path = "../sztorm" }
+amfi = {path = "../amfi" }
 thiserror = "1.0.39"
