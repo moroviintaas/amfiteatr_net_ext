@@ -3,10 +3,10 @@ use std::fmt::Debug;
 use std::io::{Read, Write};
 use std::marker::PhantomData;
 use speedy::{LittleEndian, Readable, Writable};
-use sztorm::error::CommError;
+use amfi::error::CommError;
 use thiserror::Error;
-use sztorm::comm::CommEndpoint;
-use sztorm::domain::DomainParameters;
+use amfi::comm::CommEndpoint;
+use amfi::domain::DomainParameters;
 
 //const BRIDGE_COMM_BUFFER_SIZE: usize = 256;
 #[derive(Debug, Clone, Error)]
