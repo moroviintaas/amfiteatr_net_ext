@@ -3,7 +3,7 @@ use std::fmt::Debug;
 use std::io::{Read, Write};
 use std::marker::PhantomData;
 use speedy::{LittleEndian, Readable, Writable};
-use amfi::error::CommError;
+use amfi::error::CommunicationError;
 use thiserror::Error;
 use amfi::comm::CommEndpoint;
 use amfi::domain::DomainParameters;
@@ -127,15 +127,15 @@ pub type TcpCommK1<OT, IT, E> = TcpComm<OT, IT, E, 1024>;
 pub type TcpCommK2<OT, IT, E> = TcpComm<OT, IT, E, 2048>;
 pub type TcpComm512<OT, IT, E> = TcpComm<OT, IT, E, 512>;
 
-impl<Spec: DomainParameters> From<TcpCommError> for CommError<Spec>{
+impl<Spec: DomainParameters> From<TcpCommError> for CommunicationError<Spec>{
     fn from(value: TcpCommError) -> Self {
         match value{
-            TcpCommError::SerializeError(s) => CommError::SerializeError(s),
-            TcpCommError::DeserializeError(s) => CommError::DeserializeError(s),
-            TcpCommError::SendError(s) => CommError::SendErrorUnspecified(s),
-            TcpCommError::RecvError(s) => CommError::RecvErrorUnspecified(s),
-            TcpCommError::TryRecvEmptyError => CommError::RecvEmptyBufferErrorUnspecified,
-            TcpCommError::TryRecvDisconnectedError => CommError::RecvPeerDisconnectedErrorUnspecified
+            TcpCommError::SerializeError(s) => CommunicationError::SerializeError(s),
+            TcpCommError::DeserializeError(s) => CommunicationError::DeserializeError(s),
+            TcpCommError::SendError(s) => CommunicationError::SendErrorUnspecified(s),
+            TcpCommError::RecvError(s) => CommunicationError::RecvErrorUnspecified(s),
+            TcpCommError::TryRecvEmptyError => CommunicationError::RecvEmptyBufferErrorUnspecified,
+            TcpCommError::TryRecvDisconnectedError => CommunicationError::RecvPeerDisconnectedErrorUnspecified
         }
     }
 }
