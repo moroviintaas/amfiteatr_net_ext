@@ -1,7 +1,7 @@
 
 
 use speedy::{Writable, Readable, LittleEndian};
-use amfi::comm::{CommEndpoint, SyncComm};
+use amfi::comm::{CommPort, SyncComm};
 use std::{fmt::Debug, sync::mpsc::{RecvError, SendError, TryRecvError}};
 
 use crate::tcp::{TcpComm, TcpCommError};
@@ -12,7 +12,7 @@ pub enum ComplexComm<OT, IT, E: std::error::Error, const  SIZE: usize>{
 
 }
 
-impl <'a, OT, IT, E: std::error::Error, const  SIZE: usize> CommEndpoint for ComplexComm<OT, IT, E, SIZE>
+impl <'a, OT, IT, E: std::error::Error, const  SIZE: usize> CommPort for ComplexComm<OT, IT, E, SIZE>
 where OT: Writable<LittleEndian> + Debug, IT: Readable<'a, LittleEndian> + Debug,
 E: std::error::Error + From<TcpCommError> + From<RecvError> + From<SendError<OT>> + From<TryRecvError> + From<SendError<IT>>{
     type OutwardType = OT;
