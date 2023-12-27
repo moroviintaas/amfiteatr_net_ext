@@ -5,7 +5,7 @@ use std::marker::PhantomData;
 use speedy::{LittleEndian, Readable, Writable};
 use amfi::error::CommunicationError;
 use thiserror::Error;
-use amfi::comm::CommPort;
+use amfi::comm::BidirectionalEndpoint;
 use amfi::domain::DomainParameters;
 
 //const BRIDGE_COMM_BUFFER_SIZE: usize = 256;
@@ -52,7 +52,7 @@ impl<OT, IT, E: Error, const  SIZE: usize> TcpComm<OT, IT, E, SIZE>{
     }
 }
 
-impl<'a, OT, IT, E: Error, const  SIZE: usize> CommPort for TcpComm<OT, IT, E, SIZE>
+impl<'a, OT, IT, E: Error, const  SIZE: usize> BidirectionalEndpoint for TcpComm<OT, IT, E, SIZE>
 where OT: Writable<LittleEndian> + Debug, IT: Readable<'a, LittleEndian> + Debug,
 E: From<TcpCommError>{
     type OutwardType = OT;
