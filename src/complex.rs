@@ -1,7 +1,7 @@
 
 
 use speedy::{Writable, Readable, LittleEndian};
-use amfi::comm::{BidirectionalEndpoint, StdEndpoint};
+use amfi_core::comm::{BidirectionalEndpoint, StdEndpoint};
 use std::{fmt::Debug, sync::mpsc::{RecvError, SendError, TryRecvError}};
 
 use crate::tcp::{TcpComm, TcpCommError};
