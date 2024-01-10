@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-log = "0.4.17"
-speedy = "0.8.5"
+log = "0.4.20"
+speedy = "0.8.6"
 amfi_core = {path = "../amfi_core" }
-thiserror = "1.0.39"
+thiserror = "1.0.56"
