@@ -3,10 +3,10 @@ use std::fmt::Debug;
 use std::io::{Read, Write};
 use std::marker::PhantomData;
 use speedy::{LittleEndian, Readable, Writable};
-use amfi_core::error::CommunicationError;
+use amfiteatr_core::error::CommunicationError;
 use thiserror::Error;
-use amfi_core::comm::BidirectionalEndpoint;
-use amfi_core::domain::DomainParameters;
+use amfiteatr_core::comm::BidirectionalEndpoint;
+use amfiteatr_core::domain::DomainParameters;
 
 //const BRIDGE_COMM_BUFFER_SIZE: usize = 256;
 #[derive(Debug, Clone, Error)]
