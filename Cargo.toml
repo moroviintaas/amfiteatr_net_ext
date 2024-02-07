@@ -1,6 +1,6 @@
 [package]
 name = "amfiteatr_net_ext"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 repository = "https://github.com/moroviintaas/amfiteatr_net_ext"
 license-file = "LICENSE"
@@ -12,5 +12,5 @@ description = "Proof of concept extension to provide basic TCP communication"
 [dependencies]
 log = "0.4.20"
 speedy = "0.8.6"
-amfiteatr_core = {version = "0.1.0", features = ["speedy"]}
+amfiteatr_core = {version = "0.2.0", features = ["speedy"]}
 thiserror = "1.0.56"
